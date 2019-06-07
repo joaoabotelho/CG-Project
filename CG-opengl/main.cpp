@@ -896,6 +896,7 @@ void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
     
+    
     if ( key >= 0 && key < 1024 )
     {
         if ( action == GLFW_PRESS )
