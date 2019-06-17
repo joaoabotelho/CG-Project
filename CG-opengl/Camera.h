@@ -2,6 +2,7 @@
 
 // Std. Includes
 #include <vector>
+#include <math.h>
 
 // GL Includes
 #define GLEW_STATIC
@@ -64,11 +65,19 @@ public:
         if ( direction == FORWARD )
         {
             this->position += this->front * velocity;
+            float result = fmodf(this->position.z, 1.0);
+            if(result <= 0.0 && result > -0.1){
+                this->position.y += 0.3f;
+            }
         }
         
         if ( direction == BACKWARD )
         {
             this->position -= this->front * velocity;
+            float result = fmodf(abs(this->position.z), 1.0);
+            if(((result <= 1.0 && result > 0.9) || (this->position.z < 0.1 && this->position.z >= 0.0)) && this->position.z < 0.1){
+                this->position.y -= 0.3f;
+            }
         }
         
         if ( direction == LEFT )
@@ -89,7 +98,7 @@ public:
         yOffset *= this->mouseSensitivity;
         
         this->yaw   += xOffset;
-        this->pitch += yOffset;
+        //this->pitch += yOffset;
         
         // Make sure that when pitch is out of bounds, screen doesn't get flipped
         if ( constrainPitch )
@@ -153,7 +162,7 @@ private:
         // Calculate the new Front vector
         glm::vec3 front;
         front.x = cos( glm::radians( this->yaw ) ) * cos( glm::radians( this->pitch ) );
-        front.y = sin( glm::radians( this->pitch ) );
+        //front.y = sin( glm::radians( this->pitch ) );
         front.z = sin( glm::radians( this->yaw ) ) * cos( glm::radians( this->pitch ) );
         this->front = glm::normalize( front );
         // Also re-calculate the Right and Up vector
